@@ -13,7 +13,7 @@
 
 Route::get('/', function () {
     // Build the query parameter string to pass auth information to our request
-    $query = http_build_query([
+ /*   $query = http_build_query([
         'client_id' => 3,
         'redirect_uri' => 'http://consumer.dev/callback',
         'response_type' => 'code',
@@ -21,14 +21,24 @@ Route::get('/', function () {
     ]);
 
     // Redirect the user to the OAuth authorization page
-    return redirect('http://passport.dev/oauth/authorize?' . $query);
+    return redirect('http://passport.dev/oauth/authorize?' . $query);*/
     return view('welcome');
 });
+Route::get('/auth', function () {
+    return view('auth/auth');
+});
 
-Auth::routes();
+Route::get('/redirect', function () {
 
-Route::get('/home', 'HomeController@index');
+    $query = http_build_query([
+        'client_id' => '3',
+        'redirect_uri' => 'http://client.local/callback',
+        'response_type' => 'code',
+        'scope' => ''
+    ]);
 
+    return redirect('http://server.local/oauth/authorize?'.$query);
+});
 
 // Route that user is forwarded back to after approving on server
 Route::get('callback', function (Request $request) {
